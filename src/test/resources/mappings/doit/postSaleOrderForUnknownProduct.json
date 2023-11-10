@@ -1,0 +1,18 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/ra/CommercialInvoice",
+    "bodyPatterns": [
+      {
+        "contains": "728"
+      }
+    ]
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": "No product with SKU unknown-product has been found"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/ra/WebStores/1/Products/SAMPLE01",
+    "basicAuthCredentials": {
+      "username": "user",
+      "password": "secret"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": "{\"unitOfMeasure\":\"PC\",\"isT3\":false,\"name\":\"ONEDollarSampleProduct\",\"sequentialCode\":123,\"price\":1.00,\"status\":\"UNAVAILABLE\",\"batchNumber\":\"ED1010\",\"batchExpirationDate\":\"2023-07-05 04:46:00\",\"availableQuantity\":1,\"weight\":1.00,\"description\":\"SilverDollar-SampleProduct\",\"manufacturerApiStrategy\":\"MANUFACTURER\",\"sku\":\"SAMPLE01\",\"manufacturer\":{\"id\":5,\"fullName\":\"DOitSystemsInc.\",\"mainAddress\":{\"state\":\"CA\",\"more\":\"Suite157PMB388\",\"country\":\"US\",\"city\":\"Anaheim\",\"streetName\":\"751SouthWeirCanyonRd\",\"zipCode\":\"92808\"}}}"
+  }
+}
