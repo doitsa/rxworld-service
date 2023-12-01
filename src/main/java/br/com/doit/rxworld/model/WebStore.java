@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
@@ -16,12 +18,6 @@ public class WebStore extends PanacheEntityBase {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer id;
-
-	@Column(name = "client_id")
-	public String clientId;
-
-	@Column(name = "client_secret")
-	public String clientSecret;
 
 	@Column(name = "doit_url")
 	public String doitUrl;
@@ -34,18 +30,24 @@ public class WebStore extends PanacheEntityBase {
 
 	public String organization;
 
-	@Column(name = "password")
-	public String password;
-
 	@Column(name = "rxworld_url")
-	public String rxworldUrl;
-
+	public String rxWorldUrl;
+	
 	@Column(name = "username")
 	public String username;
-
-	public String authorization() {
-		return "consumer_key=" + "&consumer_secret=";
-	}
+	
+	@Column(name = "password")
+	public String password;
+	
+	@Column(name = "client_id")
+	public String clientId;
+	
+	@Column(name = "client_secret")
+	public String clientSecret;
+	
+	@OneToOne
+	@JoinColumn(name = "rxworld_config_id", referencedColumnName = "id")
+    public RxWorldConfig rxWorldConfig;
 
 	public List<String> orderCriterias() {
 		return Arrays.asList(orderCriterias.toLowerCase().replaceAll("\\s", "").split(","));

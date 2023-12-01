@@ -8,4 +8,5 @@ public class DOitSaleOrderItem {
     public BigDecimal total;
     public BigDecimal unitPrice;
     public Integer sequentialCode;
+    public BigDecimal discount;
 }

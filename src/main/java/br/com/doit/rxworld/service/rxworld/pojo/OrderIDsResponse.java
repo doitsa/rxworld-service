@@ -6,13 +6,13 @@ import javax.json.bind.annotation.JsonbProperty;
 
 public class OrderIDsResponse {
 	@JsonbProperty("StatusCode")
-	public String statusCode;
+	public Integer statusCode;
 	@JsonbProperty("StatusMessage")
 	public String statusMessage;
 	@JsonbProperty("Result")
 	public List<Integer> result;
 	
-	public Boolean successfulRequest() {
-		return "200".equals(statusCode);
+	public Boolean isSuccessful() {
+		return statusCode.equals(200);
 	}
 }

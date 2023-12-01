@@ -10,6 +10,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -21,6 +22,7 @@ import org.junit.jupiter.api.Timeout;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 
+import br.com.doit.rxworld.model.RxWorldConfig;
 import br.com.doit.rxworld.model.WebStore;
 import br.com.doit.rxworld.orchestration.OrchestratorProfile;
 import br.com.doit.rxworld.repository.SaleOrderRepository;
@@ -52,10 +54,24 @@ public class SaleOrderOrchestratorTest {
 
 	@BeforeEach
 	public void setup() {
+		var rxWorldConfig = new RxWorldConfig();
+		rxWorldConfig.clientId = "U5z9Fy0f6zjCLim";
+		rxWorldConfig.clientSecret = "cCakpaFxTiQIS9N";
+		rxWorldConfig.tokenExpiresAt = LocalDateTime.MAX;
+		rxWorldConfig.currentBearerToken = "";
+		
+		rxWorldConfig.persistAndFlush();
+		
 		webStore = new WebStore();
+		
 		webStore.doitWebStoreId = 1;
 		webStore.organization = "Acme Corp";
-		webStore.rxworldUrl = "http://localhost:9090";
+		webStore.rxWorldUrl = "http://localhost:9090";
+		webStore.password = "password";
+		webStore.username = "username";
+		webStore.clientId = "U5z9Fy0f6zjCLim";
+		webStore.clientSecret = "cCakpaFxTiQIS9N";
+		webStore.rxWorldConfig = rxWorldConfig;
 	}
 
 	@AfterEach

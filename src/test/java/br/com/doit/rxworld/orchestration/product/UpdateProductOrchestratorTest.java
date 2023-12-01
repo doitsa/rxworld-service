@@ -54,7 +54,7 @@ public class UpdateProductOrchestratorTest {
 		var webStore = new WebStore();
 		webStore.doitWebStoreId = 1;
 		webStore.organization = "Acme Corp";
-		webStore.rxworldUrl = "http://localhost:9090";
+		webStore.rxWorldUrl = "http://localhost:9090";
 		
 		webStoreRepo.persistAndFlush(webStore);
 		

@@ -8,6 +8,6 @@
     "headers": {
       "content-type": "application/json"
     },
-    "body": "{\"ProductCode\":\"12345-1234-12\",\"SKUCode\":\"SAMPLE01\",\"DiscountedPrice\":1.0,\"ExpiryDate\":\"10\/2023\",\"LotNumber\":\"EXP123\",\"Quantity\":1}"
+    "body": "{\"StatusCode\":200,\"StatusMessage\":\"SUCCESS\",\"Result\":{\"ProductCode\":\"12345-1234-12\",\"SKUCode\":\"SAMPLE01\",\"DiscountedPrice\":1.0,\"ExpiryDate\":\"10\/2023\",\"LotNumber\":\"EXP123\",\"Quantity\":1}}"
   }
 }

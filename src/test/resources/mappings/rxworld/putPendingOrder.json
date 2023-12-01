@@ -8,6 +8,6 @@
     "headers": {
       "content-type": "application/json"
     },
-    "body": "{\"ordernumber\":727,\"status\":\"order confirmed\"}"
+    "body": "{\"ordernumber\":727,\"status\":\"Order Confirmed\"}"
   }
 }

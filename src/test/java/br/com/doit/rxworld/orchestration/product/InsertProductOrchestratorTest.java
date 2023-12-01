@@ -53,11 +53,9 @@ public class InsertProductOrchestratorTest {
 		var webStore = new WebStore();
 		webStore.doitWebStoreId = 1;
 		webStore.organization = "Acme Corp";
-		webStore.rxworldUrl = "http://localhost:9090";
-		webStore.clientId = "id";
-		webStore.clientSecret = "secret";
 		webStore.password = "password";
 		webStore.username = "username";
+		webStore.rxWorldUrl = "http://localhost:9090";
 		
 		webStoreRepo.persistAndFlush(webStore);
 	}

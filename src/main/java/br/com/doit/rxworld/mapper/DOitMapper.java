@@ -3,8 +3,8 @@ package br.com.doit.rxworld.mapper;
 import static java.math.BigDecimal.ZERO;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -15,6 +15,7 @@ import br.com.doit.rxworld.service.doit.pojo.DOitProduct;
 import br.com.doit.rxworld.service.doit.pojo.DOitSaleOrder;
 import br.com.doit.rxworld.service.doit.pojo.DOitSaleOrderItem;
 import br.com.doit.rxworld.service.rxworld.pojo.RxWorldOrder;
+import br.com.doit.rxworld.service.rxworld.pojo.RxWorldAddress;
 
 public class DOitMapper {
 	public static DOitSaleOrder toDOitSaleOrder(RxWorldOrder rxWorldOrder, StateRepository stateRepository) {
@@ -26,13 +27,14 @@ public class DOitMapper {
 			var product = new DOitProduct();
 
 			product.sku = rxWorldItem.sku;
+			product.name = rxWorldItem.name;
 
 			var doitItem = new DOitSaleOrderItem();
 
 			doitItem.product = product;
 			doitItem.quantity = new BigDecimal(rxWorldItem.quantity);
-			doitItem.unitPrice = rxWorldItem.packagePrice;
-			doitItem.total = rxWorldItem.packagePrice;
+			doitItem.unitPrice = nullableBigDecimal(rxWorldItem.unitPriceWithDiscountApplied());
+			doitItem.total = nullableBigDecimal(rxWorldItem.subTotal());
 
 			items.add(doitItem);
 		});
@@ -41,26 +43,24 @@ public class DOitMapper {
 		doitOrder.date = rxWorldOrder.orderDate;
 		doitOrder.paymentInfo = toPaymentInfo(rxWorldOrder);
 		doitOrder.externalId = rxWorldOrder.orderNumber.toString();
-//		doitOrder.shippingCost = new BigDecimal(rxWorldOrder.shippingTotal);
-		doitOrder.subTotal = rxWorldOrder.items.stream().map(item -> item.packagePrice).reduce(ZERO, BigDecimal::add);
-		doitOrder.total = rxWorldOrder.amountPaidToSeller;
-		doitOrder.discount = rxWorldOrder.items.stream().map(item -> item.totalPriceWithDiscount()).reduce(ZERO, BigDecimal::add);
+		doitOrder.subTotal = rxWorldOrder.items.stream().map(item -> nullableBigDecimal(item.subTotal())).reduce(ZERO, BigDecimal::add);
+		doitOrder.total = nullableBigDecimal(rxWorldOrder.cartTotal);
 		doitOrder.reference = rxWorldOrder.orderNumber.toString();
-		doitOrder.billingAddress = toDOitAddress(rxWorldOrder.shippingAddress, stateRepository);
+		doitOrder.billingAddress = toDOitAddress(rxWorldOrder.billingAddress, stateRepository);
+		doitOrder.shippingAddress = toDOitAddress(rxWorldOrder.shippingAddress, stateRepository);
 
 		var customer = new DOitPermanentParty();
 
 		customer.name = rxWorldOrder.buyerName;
+		customer.email = rxWorldOrder.buyerEmail;
+		customer.phone = rxWorldOrder.buyerPhone;
 
-//		customer.email = rxWorldOrder.shipping.email;
-//
-//		var customerExternalId = rxWorldOrder.customerId;
-//
-//		if (customerExternalId != null) {
-//			customer.externalId = customerExternalId.toString();
-//		}
-//
-//		customer.phone = rxWorldOrder.shipping.phone;
+		var customerExternalId = rxWorldOrder.buyerId;
+
+		if (customerExternalId != null) {
+			customer.externalId = customerExternalId.toString();
+		}
+
 		doitOrder.customer = customer;
 
 		doitOrder.shippingDescription = toShippingDescription(rxWorldOrder);
@@ -68,17 +68,15 @@ public class DOitMapper {
 		return doitOrder;
 	}
 
-	public static DOitAddress toDOitAddress(String wooAddress, StateRepository stateRepository) {
-		var split = Arrays.asList(wooAddress.replaceAll("\\s", "").split(","));
-		
+	public static DOitAddress toDOitAddress(RxWorldAddress rxWorldAddress, StateRepository stateRepository) {
 		var doitAddress = new DOitAddress();
 
-		doitAddress.streetName = split.get(0).trim();
-		doitAddress.more = split.get(1).trim();
-		doitAddress.city = split.get(2).trim();
-//		doitAddress.zipCode = // TODO: ???;
-		doitAddress.state = extractState(split.get(3).trim(), stateRepository);
-		doitAddress.country = extractCountry(split.get(4).trim());
+		doitAddress.streetName = rxWorldAddress.addressLine1;
+		doitAddress.more = rxWorldAddress.addressLine2;
+		doitAddress.city = rxWorldAddress.city;
+		doitAddress.zipCode = rxWorldAddress.zipCode;
+		doitAddress.state = extractState(rxWorldAddress.state, stateRepository);
+		doitAddress.country = extractCountry(rxWorldAddress.country);
 
 		return doitAddress;
 	}
@@ -109,28 +107,35 @@ public class DOitMapper {
 		var buffer = new StringBuffer();
 
 		buffer.append(order.shippingMethod);
-		
+
 		buffer.append("\n");
 
 		buffer.append(order.buyerName);
 
 		return buffer.toString();
 	}
-	
+
 	private static String toPaymentInfo(RxWorldOrder order) {
 		if ("Yes".equals(order.sellerReceivedPayment)) {
 			var buffer = new StringBuffer();
-			
-			buffer.append("Seller received payment on ");
-			buffer.append(order.sellerAmountCreditedDate);
+
+			var formatter = new SimpleDateFormat("MM/dd/yyyy");
+
+			buffer.append("Payment date: ");
+			buffer.append(formatter.format(order.sellerAmountCreditedDate));
 
 			buffer.append("\n");
-			
-			buffer.append(order.buyerName);
-			
+
+			buffer.append("Payment transaction number: ");
+			buffer.append(order.sellerTransRefNumbers);
+
 			return buffer.toString();
 		}
-		
+
 		return "";
+	}
+	
+	public static BigDecimal nullableBigDecimal(BigDecimal nullableBigDecimal) {
+		return nullableBigDecimal == null ? BigDecimal.ZERO : nullableBigDecimal;
 	}
 }

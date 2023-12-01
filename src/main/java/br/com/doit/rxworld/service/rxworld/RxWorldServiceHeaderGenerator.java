@@ -1,20 +1,13 @@
 package br.com.doit.rxworld.service.rxworld;
 
-import java.util.Base64;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
-import br.com.doit.rxworld.model.WebStore;
+import br.com.doit.rxworld.model.RxWorldConfig;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @RegisterForReflection
 public class RxWorldServiceHeaderGenerator {
-    public static String authorizationHeaderFor(WebStore webStore) {
-        var base64Credentials = Base64.getEncoder().encodeToString(credentialsFor(webStore).getBytes());
-
-        return "Basic " + base64Credentials;
-    }
-
-    private static String credentialsFor(WebStore webStore) {
-    	// TODO
-        return "";
-    }
+	public static String rxWorldServiceCredentials(RxWorldConfig rxWorldConfig) throws JsonProcessingException {
+    	return "Bearer " + rxWorldConfig.currentBearerToken;
+	}
 }

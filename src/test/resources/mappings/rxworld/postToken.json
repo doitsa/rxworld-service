@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/token"
+  },
+  "response": {
+    "status": 201,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": "{\"access_token\":\"a\",\"token_type\":\"bearer\",\"expires_in\":3599}"
+  }
+}

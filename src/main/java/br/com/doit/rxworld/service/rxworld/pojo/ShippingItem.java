@@ -4,14 +4,14 @@ package br.com.doit.rxworld.service.rxworld.pojo;
 import javax.json.bind.annotation.JsonbProperty;
 
 public class ShippingItem {
-	@JsonbProperty("expiryDate")
+	@JsonbProperty("ExpiryDate")
 	public String expirationDate;
-	@JsonbProperty("lotNumber")
+	@JsonbProperty("LotNumber")
 	public String lotNumber;
-	@JsonbProperty("productCode")
+	@JsonbProperty("ProductCode")
 	public String ndc;
-	@JsonbProperty("quantity")
+	@JsonbProperty("Quantity")
 	public Integer quantity;
-	@JsonbProperty("skuCode")
+	@JsonbProperty("SKUCode")
 	public String sku;
 }

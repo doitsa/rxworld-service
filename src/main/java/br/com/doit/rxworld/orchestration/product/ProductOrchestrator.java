@@ -8,7 +8,10 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
+import org.eclipse.microprofile.rest.client.RestClientDefinitionException;
 import org.jboss.logging.Logger;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import br.com.doit.rxworld.mapper.RxWorldMapper;
 import br.com.doit.rxworld.model.WebStore;
@@ -16,6 +19,7 @@ import br.com.doit.rxworld.repository.ProductRepository;
 import br.com.doit.rxworld.repository.WebStoreRepository;
 import br.com.doit.rxworld.service.doit.DOitServiceProvider;
 import br.com.doit.rxworld.service.doit.pojo.DOitProduct;
+import br.com.doit.rxworld.service.rxworld.RxWorldService;
 import br.com.doit.rxworld.service.rxworld.RxWorldServiceProvider;
 
 @ApplicationScoped
@@ -36,12 +40,9 @@ public class ProductOrchestrator {
 	ProductRepository productRepository;
 
 	public void upsertProduct(DOitProductCommand command) {
-		System.out.println("aaaa = " + command);
-		
 		var system = command.system;
 		var webStoreId = command.webStore;
 		var sku = command.sku;
-		
 
 		var webStore = webStoreRepository.findByWebStoreAndOrganization(webStoreId, system);
 
@@ -59,7 +60,14 @@ public class ProductOrchestrator {
 	}
 
 	private void upsertProductInWoo(WebStore webStore, DOitProduct doitProduct, String system) {
-		var rxWorldService = rxWorldServiceProvider.get(webStore);
+		RxWorldService rxWorldService;
+
+		try {
+			rxWorldService = rxWorldServiceProvider.get(webStore);
+		} catch (JsonProcessingException | IllegalStateException | RestClientDefinitionException exception) {
+			log.error("Error thrown while trying to get authorization: " + exception.getMessage());
+			return;
+		}
 
 		var rxWorldProduct = RxWorldMapper.toRxWorldProduct(doitProduct);
 
@@ -69,29 +77,37 @@ public class ProductOrchestrator {
 			if (productReference.isPresent()) {
 				log.infof("Update product %s on RxWorld.", doitProduct.sku);
 
-				rxWorldService.postProduct(rxWorldProduct);
+				var updateProductRequest = rxWorldService.postProduct(rxWorldProduct);
 
-				productReference.get().dateUpdated = Date.valueOf(now().toString());
+				if (updateProductRequest.isSuccessful()) {
+					productReference.get().dateUpdated = Date.valueOf(now().toString());
 
-				productReference.get().persistAndFlush();
+					productReference.get().persistAndFlush();
 
-				log.infof("Finished product update %s for web store %s.", doitProduct.sku, webStore.doitWebStoreId);
+					log.infof("Finished product update %s for web store %s.", doitProduct.sku, webStore.doitWebStoreId);
+				} else {
+					log.error("There was an error while updating the product. " + updateProductRequest.statusMessage);
+				}
 			} else {
 				log.infof("Insert product %s on RxWorld.", doitProduct.sku);
 
-				rxWorldService.postProduct(rxWorldProduct);
-				
-				var newProductReference = new br.com.doit.rxworld.model.Product();
-				
-				newProductReference.doitProductId = doitProduct.sequentialCode;
-				newProductReference.dateCreated = Date.valueOf(now().toString());
-				newProductReference.dateUpdated = Date.valueOf(now().toString());
-				newProductReference.sku = rxWorldProduct.sku;
-				newProductReference.webStore = webStore;
+				var postProductRequest = rxWorldService.postProduct(rxWorldProduct);
 
-				newProductReference.persistAndFlush();
+				if (postProductRequest.isSuccessful()) {
+					var newProductReference = new br.com.doit.rxworld.model.Product();
 
-				log.infof("Finished product insert %s for web store %s.", doitProduct.sku, webStore.doitWebStoreId);
+					newProductReference.doitProductId = doitProduct.sequentialCode;
+					newProductReference.dateCreated = Date.valueOf(now().toString());
+					newProductReference.dateUpdated = Date.valueOf(now().toString());
+					newProductReference.sku = rxWorldProduct.sku;
+					newProductReference.webStore = webStore;
+
+					newProductReference.persistAndFlush();
+
+					log.infof("Finished product insert %s for web store %s.", doitProduct.sku, webStore.doitWebStoreId);
+				} else {
+					log.error("There was an error while posting the product. " + postProductRequest.statusMessage);
+				}
 			}
 		} catch (Exception exception) {
 			log.error(exception.getMessage());
