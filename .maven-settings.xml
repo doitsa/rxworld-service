@@ -16,6 +16,7 @@
       <id>default</id>
       <activation>
         <activeByDefault>true</activeByDefault>
+      </activation>
       <!--Enable snapshots for the built in central repo to direct all requests to nexus via the mirror -->
       <repositories>
         <repository>
