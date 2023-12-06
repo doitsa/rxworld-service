@@ -35,7 +35,7 @@ public class DOitMapperTest {
 	public void fromRxWorldOrderToDOitSaleOrder() throws Exception {
 		var item = new RxWorldSaleItem();
 		item.sku = "SAMPLE01";
-		item.discountPercentage = new BigDecimal("75");
+		item.discountPercentage = new BigDecimal("50");
 		item.name = "Product Name";
 		item.packagePrice = new BigDecimal("2");
 		item.quantity = 10;
@@ -69,8 +69,7 @@ public class DOitMapperTest {
 		rxWorldOrder.shippingMethod = "Ground shipping";
 		rxWorldOrder.buyerEmail = "johndoe@doit.com";
 		rxWorldOrder.buyerPhone = "(333) 333-3333";
-		rxWorldOrder.cartTotal = new BigDecimal("13");
-		rxWorldOrder.rxWorldFee = new BigDecimal("2");
+		rxWorldOrder.cartTotal = new BigDecimal("15");
 		
 		rxWorldOrder.items.add(item);
 		rxWorldOrder.billingAddress = rxWorldBillingAddress;
@@ -82,15 +81,14 @@ public class DOitMapperTest {
 		assertThat(doitOrder.items.get(0).product.sku, is("SAMPLE01"));
         assertThat(doitOrder.items.get(0).product.name, is("Product Name"));
         assertThat(doitOrder.items.get(0).quantity, comparesEqualTo(new BigDecimal("10")));
-        assertThat(doitOrder.items.get(0).unitPrice, comparesEqualTo(new BigDecimal("2")));
-        assertThat(doitOrder.items.get(0).total, comparesEqualTo(new BigDecimal("20")));
+        assertThat(doitOrder.items.get(0).unitPrice, comparesEqualTo(new BigDecimal("1")));
+        assertThat(doitOrder.items.get(0).total, comparesEqualTo(new BigDecimal("10")));
         assertThat(doitOrder.date, is(DateUtils.toDateTime(LocalDateTime.of(2023, 6, 20, 11, 40))));
         assertThat(doitOrder.paymentInfo, is("Payment date: 10/10/2023\nPayment transaction number: TR9876"));
         assertThat(doitOrder.externalId, is("123"));
         assertThat(doitOrder.shippingCost, is(nullValue()));
-        assertThat(doitOrder.subTotal, comparesEqualTo(new BigDecimal("20")));
+        assertThat(doitOrder.subTotal, comparesEqualTo(new BigDecimal("10")));
         assertThat(doitOrder.total, comparesEqualTo(new BigDecimal("15")));
-        assertThat(doitOrder.discount, comparesEqualTo(new BigDecimal("5")));
         assertThat(doitOrder.reference, is("123"));
         assertThat(doitOrder.customer.name, is("John Doe"));
 		assertThat(doitOrder.customer.email, is("johndoe@doit.com"));
@@ -157,7 +155,7 @@ public class DOitMapperTest {
 	@Test
 	public void moreItemsOrder() throws Exception {
 		var item1 = new RxWorldSaleItem();
-		item1.discountPercentage = new BigDecimal("75");
+		item1.discountPercentage = new BigDecimal("50");
 		item1.packagePrice = new BigDecimal("2");
 		item1.quantity = 10;
 		
@@ -185,8 +183,7 @@ public class DOitMapperTest {
 		var rxWorldOrder = new RxWorldOrder();
 		rxWorldOrder.items = new ArrayList<RxWorldSaleItem>();
 		rxWorldOrder.orderNumber = 123;
-		rxWorldOrder.cartTotal = new BigDecimal("23");
-		rxWorldOrder.rxWorldFee = new BigDecimal("2");
+		rxWorldOrder.cartTotal = new BigDecimal("25");
 		
 		rxWorldOrder.items.add(item1);
 		rxWorldOrder.items.add(item2);
@@ -197,16 +194,16 @@ public class DOitMapperTest {
 
 		assertFalse(doitOrder.items.isEmpty());
         assertThat(doitOrder.items.get(0).quantity, comparesEqualTo(new BigDecimal("10")));
-        assertThat(doitOrder.items.get(0).unitPrice, comparesEqualTo(new BigDecimal("2")));
-        assertThat(doitOrder.items.get(0).total, comparesEqualTo(new BigDecimal("20")));
+        assertThat(doitOrder.items.get(0).unitPrice, comparesEqualTo(new BigDecimal("1")));
+        assertThat(doitOrder.items.get(0).total, comparesEqualTo(new BigDecimal("10")));
         
         assertThat(doitOrder.items.get(1).quantity, comparesEqualTo(new BigDecimal("2")));
-        assertThat(doitOrder.items.get(1).unitPrice, comparesEqualTo(new BigDecimal("10")));
-        assertThat(doitOrder.items.get(1).total, comparesEqualTo(new BigDecimal("20")));
+        assertThat(doitOrder.items.get(1).unitPrice, comparesEqualTo(new BigDecimal("5")));
+        assertThat(doitOrder.items.get(1).total, comparesEqualTo(new BigDecimal("10")));
         
-        assertThat(doitOrder.subTotal, comparesEqualTo(new BigDecimal("40")));
+        assertThat(doitOrder.subTotal, comparesEqualTo(new BigDecimal("20")));
         assertThat(doitOrder.total, comparesEqualTo(new BigDecimal("25")));
-        assertThat(doitOrder.discount, comparesEqualTo(new BigDecimal("15")));
+        assertThat(doitOrder.discount, comparesEqualTo(BigDecimal.ZERO));
 	}
 	
 	@Test
