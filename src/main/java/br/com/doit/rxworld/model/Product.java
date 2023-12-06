@@ -1,6 +1,5 @@
 package br.com.doit.rxworld.model;
 
-
 import java.sql.Date;
 
 import javax.persistence.Column;

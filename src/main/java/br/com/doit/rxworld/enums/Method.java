@@ -1,7 +1,6 @@
 package br.com.doit.rxworld.enums;
 
 public enum Method {
-    BOLETO("BoletoPayment"),
     CREDIT_CARD("CreditCardPayment");
 
     private final String typeClass;
