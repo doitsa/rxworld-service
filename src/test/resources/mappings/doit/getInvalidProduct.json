@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/ra/WebStores/1/Products/WRONGSAMPLE",
+    "basicAuthCredentials": {
+      "username": "user",
+      "password": "secret"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": "{wrongBody}"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/ra/CommercialInvoice",
+    "bodyPatterns": [
+      {
+        "contains": "729"
+      }
+    ]
+  },
+  "response": {
+    "status": 409,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": "An attempt has been made to create a sale order that is already created (WebStore ID 1 and external ID 729)"
+  }
+}

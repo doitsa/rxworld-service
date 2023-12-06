@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "PUT",
+    "url": "/api/orders/v1/updateorderstatus"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": "{\"ordernumber\":727,\"status\":\"Order Confirmed\"}"
+  }
+}

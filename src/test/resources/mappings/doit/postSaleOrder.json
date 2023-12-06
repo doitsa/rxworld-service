@@ -1,0 +1,18 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/ra/CommercialInvoice",
+    "bodyPatterns": [
+      {
+        "contains": "727"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": "{\"id\":2,\"typeClass\":\"CommercialInvoice\",\"averageCostGrossProfit\":4,\"averageCostGrossProfitPercentage\":66.67,\"averageCostOfGoodsSold\":2,\"averageNetCostOfGoodsSold\":2,\"costOfGoodsSold\":0,\"currency\":\"USD\",\"currencyQuote\":1,\"date\":\"2017-03-22 00:00:00\",\"dtCreated\":\"2023-07-10 14:40:22\",\"dtMod\":\"2023-07-10 14:40:22\",\"externalId\":\"727\",\"grandTotal\":16,\"grossProfit\":0,\"grossProfitPercentage\":0,\"hasAlert\":false,\"hasAuthorizedCCTransaction\":false,\"isSigned\":false,\"itemBasedTaxes\":0,\"operationType\":\"NORMAL\",\"partialShippingAllowed\":true,\"paymentInfo\":\"DirectBankTransfer\",\"pendingPreAuthorization\":false,\"rawSubTotal\":6,\"reference\":\"727\",\"salesAgentCommissionPercentage\":0,\"sequentialCode\":3000001,\"serviceFeeAmount\":0,\"shippingDescription\":\"FlatRate\\nJohnDoe\",\"shippingOperationType\":\"NONE\",\"status\":\"PENDING\",\"subTotal\":6,\"taxes\":0,\"taxVat\":0,\"totalInvoiced\":0,\"totalQuantity\":2,\"payments\":[]}"
+  }
+}

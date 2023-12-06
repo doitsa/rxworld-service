@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/api/orders/v1/order?ordernumber=729"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": "{\"StatusCode\":200,\"StatusMessage\":\"SUCCESS\",\"Result\":{\"OrderNumber\":729,\"BuyerName\":\"Midtown Pharmacy\",\"BuyerPhone\":\"(123) 874-1251\",\"BuyerEmail\":\"buyeremail@gmail.com\",\"BuyerDEANumber\":\"KF6125341\",\"BuyerID\":732874205,\"OrderDate\":\"2023-10-26 03:32:46\",\"PickedUpDate\":null,\"DeliveredDate\":null,\"TrackingNumber\":null,\"CartTotal\":123.45,\"ShippingAmountPaidByBuyer\":0.0,\"ShippingDeductions\":0.0,\"ShippingInsuranceCost\":0.0,\"HandlingCost\":0.0,\"RxWorldFee\":124.56,\"AmountPaidToSeller\":1.11,\"SellerReceivedPayment\":\"No\",\"SellerAmountCreditedDate\":null,\"SellerTransRefNumbers\":null,\"OrderCancelReason\":null,\"WholesaleDirectOrder\":\"No\",\"ShippingAddress\":{\"AddressLine1\":\"88 Austin Road, Suite 18\",\"AddressLine2\":\"\",\"City\":\"Edision\",\"State\":\"NJ\",\"ZipCode\":\"08820\",\"Country\":\"USA\"},\"BillingAddress\":{\"AddressLine1\":\"20 Austin Road, Suite 24\",\"AddressLine2\":\"\",\"City\":\"Edision\",\"State\":\"NJ\",\"ZipCode\":\"08820\",\"Country\":\"USA\"},\"ShippingMethod\":\"FedExGround\",\"SellerShippingAccountUsed\":\"Yes\",\"Status\":\"Order Placed\",\"Items\":[{\"ProductType\":\"Rx\",\"ProductCode\":\"01234-5678-90\",\"SKUCode\":\"SAMPLE01\",\"Name\":\"Sample product\",\"ExpiryDate\":\"10/2027\",\"Strength\":\"1.0 MG\",\"FormType\":\"Tablet\",\"Packaging\":null,\"BrandOrGeneric\":\"Generic\",\"LotNumber\":\"LOT98765\",\"PackagePrice\":100.0,\"DiscountPercentage\":15.0,\"Quantity\": 1,\"Status\":\"Order Placed\"}]}}"
+  }
+}
