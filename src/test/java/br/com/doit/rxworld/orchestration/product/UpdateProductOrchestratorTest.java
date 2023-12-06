@@ -107,7 +107,7 @@ public class UpdateProductOrchestratorTest {
 	
 	@Test
 	@Timeout(4)
-	void doNotUpdateWooProductWhenWebStoreIsNotFound() throws InterruptedException {
+	void doNotUpdateProductWhenWebStoreIsNotFound() throws InterruptedException {
 		SqsQueueUtils.sendMessage(sqsClient, "test_rxworld_update_product", "{\"system\": \"Acme Corp\", \"sku\": \"SAMPLE01\", \"webStore\": 2, \"flow\": \"UPDATE_PRODUCT\"}");
 		
 		wireMock.verify(exactly(0), getRequestedFor(urlEqualTo("/ra/WebStores/2/Products/SAMPLE01")));
@@ -116,7 +116,7 @@ public class UpdateProductOrchestratorTest {
 	
 	@Test
 	@Timeout(4)
-	void doNotUpdateWooProductWhenSomethingIsWrongOnJsonBody() throws InterruptedException {
+	void doNotUpdateProductWhenSomethingIsWrongOnJsonBody() throws InterruptedException {
 		SqsQueueUtils.sendMessage(sqsClient, "test_rxworld_update_product", "{\"system\": \"Acme Corp\", \"sku\": \"WRONGSAMPLE\", \"webStore\": 1, \"flow\": \"UPDATE_PRODUCT\"}");
 		
 		while (WireMockUtils.noRequestMatching(wireMock, "/ra/WebStores/1/Products/WRONGSAMPLE")) {

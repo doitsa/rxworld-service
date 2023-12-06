@@ -53,13 +53,13 @@ public class ProductOrchestrator {
 
 			var doitProduct = doitService.getProduct(webStoreId, sku);
 
-			upsertProductInWoo(webStore.get(), doitProduct, system);
+			upsertProduct(webStore.get(), doitProduct, system);
 		} else {
 			log.infof("No web store " + webStoreId + " of organization " + system + " found. Discarding the message.");
 		}
 	}
 
-	private void upsertProductInWoo(WebStore webStore, DOitProduct doitProduct, String system) {
+	private void upsertProduct(WebStore webStore, DOitProduct doitProduct, String system) {
 		RxWorldService rxWorldService;
 
 		try {

@@ -1,6 +1,5 @@
 package br.com.doit.rxworld.mapper;
 
-import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 
 import br.com.doit.rxworld.service.doit.pojo.DOitProduct;
@@ -30,9 +29,5 @@ public class RxWorldMapper {
 		}
 		
 		return product;
-	}
-	
-	public static boolean isAvailable(BigDecimal availableQuantity) {
-		return availableQuantity != null && availableQuantity.compareTo(BigDecimal.ZERO) > 0;
 	}
 }
