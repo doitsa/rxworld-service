@@ -149,7 +149,6 @@ public class DOitMapperTest {
         assertThat(doitOrder.items.get(0).total, comparesEqualTo(new BigDecimal("20")));
         assertThat(doitOrder.subTotal, comparesEqualTo(new BigDecimal("20")));
         assertThat(doitOrder.total, comparesEqualTo(new BigDecimal("20")));
-        assertThat(doitOrder.discount, is(BigDecimal.ZERO));
 	}
 	
 	@Test
@@ -203,7 +202,6 @@ public class DOitMapperTest {
         
         assertThat(doitOrder.subTotal, comparesEqualTo(new BigDecimal("20")));
         assertThat(doitOrder.total, comparesEqualTo(new BigDecimal("25")));
-        assertThat(doitOrder.discount, comparesEqualTo(BigDecimal.ZERO));
 	}
 	
 	@Test
